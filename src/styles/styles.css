@@ -1,0 +1,15 @@
+.origin-flag,
+.destination-flag {
+    margin-right: 5px;
+    width: 25px;
+}
+
+.origin p,
+.destination p {
+    display: inline;
+}
+
+.options-flight,
+.new-passenger {
+    margin-left: auto;
+}
