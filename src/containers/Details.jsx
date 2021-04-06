@@ -11,13 +11,13 @@ const Details = () => {
   const { state } = useContext(AppContext);
   const flight = state.flight[0];
 
-  const data = { flightId : flight._id };
+  const data = { flightId: flight._id };
 
   const config = {
     method: "post",
     url: "http://localhost:3000/api/tickets/",
     headers: { "Content-Type": "application/json" },
-    data
+    data,
   };
   useEffect(() => {
     axios(config)
@@ -61,7 +61,7 @@ const Details = () => {
                 <strong>{flight.date.substring(0, 16)}</strong>
               </div>
               <div className="new-passenger">
-                <AddPassenger />
+                <AddPassenger flight={flight} />
               </div>
             </div>
             <div className="card-body text-secondary">
@@ -121,7 +121,6 @@ const Details = () => {
                     </div>
                   </td>
                 </tr>
-
               ))}
             </tbody>
           </table>

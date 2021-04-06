@@ -21,7 +21,7 @@ const DeleteConfirm = ({ title, id, arrayFlights }) => {
     axios(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        if(title === "flight"){
+        if (title === "flight") {
           const indexFlight = flights.findIndex((item) => item._id === id);
           flights.splice(indexFlight, 1);
           setFlights(flights);

@@ -17,12 +17,12 @@ const AddPassenger = ({ flight }) => {
   };
 
   const onSubmit = (data) => {
-    data.seatNumber = flight.occupiedSeats + 1;
+    data.seatNumber = flight.tickets.length + 1;
     data.flightId = flight._id;
 
     const config = {
       method: "post",
-      url: "http://localhost:3000/api/tickets/",
+      url: "http://localhost:3000/api/tickets/add/",
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,7 +34,7 @@ const AddPassenger = ({ flight }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.log("hola", error);
+        console.log(error);
       });
 
     openModal();
@@ -42,13 +42,22 @@ const AddPassenger = ({ flight }) => {
 
   return (
     <>
-      <Button
-        color="outline-success"
-        className="btn btn-sm m-1"
-        onClick={openModal}
-      >
-        Add passenger
-      </Button>
+      {flight.tickets.length !== flight.capacity ? (
+        <Button
+          color="outline-success"
+          className="btn btn-sm m-1"
+          onClick={openModal}
+        >
+          Add passenger
+        </Button>
+      ) : (
+        <Button
+          color="warning"
+          className="btn btn-sm m-1"
+        >
+          Flight is full
+        </Button>
+      )}
 
       <Modal isOpen={openModalState}>
         <form onSubmit={handleSubmit(onSubmit)}>
