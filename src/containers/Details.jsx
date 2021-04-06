@@ -1,12 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import DeleteConfirm from "../components/DeleteConfirm";
+import AddPassenger from "../components/AddPassenger";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../context/AppContext";
 
 const Details = () => {
+  const [passengers, setPassengers] = useState([]);
   const { state } = useContext(AppContext);
   const flight = state.flight[0];
-  console.log(flight);
+
+  const data = { flightId : flight._id };
+
+  const config = {
+    method: "post",
+    url: "http://localhost:3000/api/tickets/",
+    headers: { "Content-Type": "application/json" },
+    data
+  };
+  useEffect(() => {
+    axios(config)
+      .then((response) => {
+        setPassengers(response.data.tickets);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <div>
       <div className="row">
@@ -20,13 +42,14 @@ const Details = () => {
         <div className="col-sm-6">
           <div className="d-grid gap-2 d-md-flex justify-content-md-end">
             <Link to="/edit-flight">
-              <button type="button" className="btn btn-outline-primary btn-sm m-1">
+              <button
+                type="button"
+                className="btn btn-outline-primary btn-sm m-1"
+              >
                 Edit
               </button>
             </Link>
-            <a type="button" className="btn btn-danger btn-sm m-1">
-              Delete
-            </a>
+            <DeleteConfirm title="flight" />
           </div>
         </div>
       </div>
@@ -35,30 +58,24 @@ const Details = () => {
           <div className="card border-secondary mb-3">
             <div className="card-header d-flex">
               <div>
-                <strong>{flight.date}</strong>
+                <strong>{flight.date.substring(0, 16)}</strong>
               </div>
               <div className="new-passenger">
-                <a type="button" className="btn btn-outline-success btn-sm">
-                  Add passenger
-                </a>
+                <AddPassenger />
               </div>
             </div>
             <div className="card-body text-secondary">
               <div className="row">
                 <div className="origin col-sm-6">
                   <h5>Origin</h5>
-                  <img
-                    className="origin-flag"
-                    src="https://restcountries.eu/data/col.svg"
-                    alt=""
-                  />
+                  <img className="origin-flag" src={flight.originFlag} alt="" />
                   <p>{flight.origin}</p>
                 </div>
                 <div className="destination col-sm-6">
                   <h5>Destination</h5>
                   <img
                     className="destination-flag"
-                    src="https://restcountries.eu/data/mex.svg"
+                    src={flight.destinationFlag}
                     alt=""
                   />
                   <p>{flight.destination}</p>
@@ -68,7 +85,7 @@ const Details = () => {
             <div className="card-footer d-flex">
               <div className="capacity p-2">
                 <span>
-                  Capacity: {flight.occupiedSeats}/{flight.capacity}
+                  Capacity: {flight.tickets.length}/{flight.capacity}
                 </span>
               </div>
             </div>
@@ -87,24 +104,25 @@ const Details = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>1</td>
-                <td>
-                  <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a
-                      type="button"
-                      className="btn btn-outline-primary btn-sm m-1"
-                    >
-                      Edit
-                    </a>
-                    <a type="button" className="btn btn-danger btn-sm m-1">
-                      Delete
-                    </a>
-                  </div>
-                </td>
-              </tr>
+              {passengers.map((passenger) => (
+                <tr key={passenger._id}>
+                  <td>{passenger.passengerName}</td>
+                  <td>{passenger.passengerLastname}</td>
+                  <td>{passenger.seatNumber}</td>
+                  <td>
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <a
+                        type="button"
+                        className="btn btn-outline-primary btn-sm m-1"
+                      >
+                        Edit
+                      </a>
+                      <DeleteConfirm title="ticket" id={passenger._id} />
+                    </div>
+                  </td>
+                </tr>
+
+              ))}
             </tbody>
           </table>
         </div>

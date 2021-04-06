@@ -1,49 +1,32 @@
+// import axios from "axios";
+
+// const config = {
+//     method: "get",
+//     url: "http://localhost:3000/api/flights/",
+//     headers: {},
+// };
+
+// const flights = async() => {
+//     const res = await axios.get("http://localhost:3000/api/flights/")
+//     console.log(res.data.flights);
+//     return res;
+// }
+
+// // const getFlights = async() => {
+// //     const res = await axios(config)
+// //         .then((response) => {
+// //             response.data.flights;
+// //             //console.log(response.data.flights)
+// //         })
+// //         .catch((error) => {
+// //             console.log('mensaje:', error);
+// //         });
+
+// //     return res;
+// // }
+
+// flights().then(val => console.log(val.data.flights))
 export default {
-    flight: [],
-    flights: [{
-            _id: "1",
-            origin: "Colombia - (Bogotá)",
-            destination: "Mexico - (Mexico City)",
-            capacity: 25,
-            date: "2016-05-18T16:00:00.000Z",
-            occupiedSeats: 3,
-            isFull: false,
-        },
-        {
-            _id: "2",
-            origin: "Colombia - (Bogotá)",
-            destination: "Mexico - (Mexico City)",
-            capacity: 25,
-            date: "2016-05-18T16:00:00.000Z",
-            occupiedSeats: 3,
-            isFull: false,
-        },
-        {
-            _id: "3",
-            origin: "Colombia - (Bogotá)",
-            destination: "Mexico - (Mexico City)",
-            capacity: 25,
-            date: "2016-05-18T16:00:00.000Z",
-            occupiedSeats: 3,
-            isFull: false,
-        },
-        {
-            _id: "4",
-            origin: "Colombia - (Bogotá)",
-            destination: "Mexico - (Mexico City)",
-            capacity: 25,
-            date: "2016-05-18T16:00:00.000Z",
-            occupiedSeats: 3,
-            isFull: false,
-        },
-        {
-            _id: "5",
-            origin: "Colombia - (Bogotá)",
-            destination: "Mexico - (Mexico City)",
-            capacity: 25,
-            date: "2016-05-18T16:00:00.000Z",
-            occupiedSeats: 3,
-            isFull: false,
-        },
-    ],
+  flight: [],
+  // flights,
 };

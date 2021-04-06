@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import countries from "../countries.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/styles.css";
@@ -13,9 +14,40 @@ const NewFlight = () => {
   } = useForm();
   const dateNow = new Date().toISOString().substring(0, 16);
   const onSubmit = (data) => {
-    console.log(data);
+    const originNameStart = data.origin.indexOf(" - ");
+    const originNameFlag = data.origin.substr(0, originNameStart);
+    const originFlag = countries.findIndex(
+      (item) => item.name === originNameFlag
+    );
+    data.originFlag = countries[originFlag].flag;
+
+    const destinationNameStart = data.destination.indexOf(" - ");
+    const destinationNameFlag = data.destination.substr(
+      0,
+      destinationNameStart
+    );
+    const destinationFlag = countries.findIndex(
+      (item) => item.name === destinationNameFlag
+    );
+    data.destinationFlag = countries[destinationFlag].flag;
+
+    const config = {
+      method: "post",
+      url: "http://localhost:3000/api/flights/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data,
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  console.log(dateNow);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="row p-3">
@@ -69,7 +101,10 @@ const NewFlight = () => {
                       {...register("origin", { required: "Required" })}
                     >
                       {countries.map((countrie) => (
-                        <option key={countrie.alpha3Code} value={`${countrie.name} - (${countrie.capital})`}>
+                        <option
+                          key={countrie.alpha3Code}
+                          value={`${countrie.name} - (${countrie.capital})`}
+                        >
                           {countrie.name} - ({countrie.capital})
                         </option>
                       ))}
@@ -88,7 +123,10 @@ const NewFlight = () => {
                       {...register("destination", { required: "Required" })}
                     >
                       {countries.map((countrie) => (
-                        <option key={countrie.alpha3Code} value={`${countrie.name} - (${countrie.capital})`}>
+                        <option
+                          key={countrie.alpha3Code}
+                          value={`${countrie.name} - (${countrie.capital})`}
+                        >
                           {countrie.name} - ({countrie.capital})
                         </option>
                       ))}

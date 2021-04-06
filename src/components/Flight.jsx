@@ -1,38 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import DeleteConfirm from "./DeleteConfirm";
+import AddPassenger from "./AddPassenger";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Flight = ({ flight, handleViewDetail }) => {
+const Flight = ({ flight, arrayFlights, handleViewDetail }) => {
   return (
     <div className="col-md-6">
       <div className="card border-secondary mb-3">
         <div className="card-header d-flex">
           <div>
-            <strong>{flight.date}</strong>
+            <strong>{flight.date.substring(0, 16)}</strong>
           </div>
           <div className="new-passenger">
-            <a type="button" className="btn btn-outline-success btn-sm">
-              Add passenger
-            </a>
+            <AddPassenger flight={flight} />
           </div>
         </div>
         <div className="card-body text-secondary">
           <div className="row">
             <div className="origin col-sm-6">
               <h5>Origin</h5>
-              <img
-                className="origin-flag"
-                src="https://restcountries.eu/data/col.svg"
-                alt=""
-              />
+              <img className="origin-flag" src={flight.originFlag} alt="" />
               <p>{flight.origin}</p>
             </div>
             <div className="destination col-sm-6">
               <h5>Destination</h5>
               <img
                 className="destination-flag"
-                src="https://restcountries.eu/data/mex.svg"
+                src={flight.destinationFlag}
                 alt=""
               />
               <p>{flight.destination}</p>
@@ -42,7 +37,7 @@ const Flight = ({ flight, handleViewDetail }) => {
         <div className="card-footer d-flex">
           <div className="capacity p-2">
             <span>
-              Capacity: {flight.occupiedSeats}/{flight.capacity}
+              Capacity: {flight.tickets.length}/{flight.capacity}
             </span>
           </div>
           <div className="btn-group-sm options-flight" role="group">
@@ -55,9 +50,11 @@ const Flight = ({ flight, handleViewDetail }) => {
                 View details
               </button>
             </Link>
-            <button type="button" className="btn btn-outline-danger btn-sm m-1">
-              Delete
-            </button>
+            <DeleteConfirm
+              title="flight"
+              id={flight._id}
+              arrayFlights={arrayFlights}
+            />
           </div>
         </div>
       </div>

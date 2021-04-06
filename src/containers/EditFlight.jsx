@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import countries from "../countries.json";
 import AppContext from "../context/AppContext";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,20 +9,55 @@ import "../styles/styles.css";
 
 const EditFlight = () => {
   const { state } = useContext(AppContext);
-  const { date, origin, destination, capacity} = state.flight[0];
+  const { date, origin, destination, capacity } = state.flight[0];
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue
+    setValue,
   } = useForm();
   const dateNow = date.substring(0, 16);
   const onSubmit = (data) => {
+    const originNameStart = data.origin.indexOf(" - ");
+    const originNameFlag = data.origin.substr(0, originNameStart);
+    const originFlag = countries.findIndex(
+      (item) => item.name === originNameFlag
+    );
+    data.originFlag = countries[originFlag].flag;
+
+    const destinationNameStart = data.destination.indexOf(" - ");
+    const destinationNameFlag = data.destination.substr(
+      0,
+      destinationNameStart
+    );
+    const destinationFlag = countries.findIndex(
+      (item) => item.name === destinationNameFlag
+    );
+    data.destinationFlag = countries[destinationFlag].flag;
+
     state.flight[0].capacity = data.capacity;
     state.flight[0].date = data.date;
     state.flight[0].origin = data.origin;
     state.flight[0].destination = data.destination;
-    console.log(state);
+    state.flight[0].originFlag = data.originFlag;
+    state.flight[0].destinationFlag = data.destinationFlag;
+
+    const config = {
+      method: "put",
+      url: `http://localhost:3000/api/flights/${state.flight[0]._id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data,
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   setValue("capacity", capacity);
@@ -40,11 +76,11 @@ const EditFlight = () => {
         </div>
         <div className="col-sm-6">
           <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <input
-                type="submit"
-                value="Save"
-                className="btn btn-success btn-sm"
-              />
+            <input
+              type="submit"
+              value="Save"
+              className="btn btn-success btn-sm"
+            />
           </div>
         </div>
       </div>
@@ -80,7 +116,10 @@ const EditFlight = () => {
                       {...register("origin", { required: "Required" })}
                     >
                       {countries.map((countrie) => (
-                        <option key={countrie.alpha3Code} value={`${countrie.name} - (${countrie.capital})`}>
+                        <option
+                          key={countrie.alpha3Code}
+                          value={`${countrie.name} - (${countrie.capital})`}
+                        >
                           {countrie.name} - ({countrie.capital})
                         </option>
                       ))}
@@ -99,7 +138,10 @@ const EditFlight = () => {
                       {...register("destination", { required: "Required" })}
                     >
                       {countries.map((countrie) => (
-                        <option key={countrie.alpha3Code} value={`${countrie.name} - (${countrie.capital})`}>
+                        <option
+                          key={countrie.alpha3Code}
+                          value={`${countrie.name} - (${countrie.capital})`}
+                        >
                           {countrie.name} - ({countrie.capital})
                         </option>
                       ))}
@@ -116,16 +158,16 @@ const EditFlight = () => {
                     Capacity
                   </label>
                   <div className="col-12">
-                      <input
-                        className="form-control"
-                        type="number"
-                        id="capacity"
-                        {...register("capacity", {
-                          required: "Required",
-                          min: 10,
-                          max: 200,
-                        })}
-                      />
+                    <input
+                      className="form-control"
+                      type="number"
+                      id="capacity"
+                      {...register("capacity", {
+                        required: "Required",
+                        min: 10,
+                        max: 200,
+                      })}
+                    />
                     {errors.capacity && <p>{errors.capacity.message}</p>}
                   </div>
                 </div>
