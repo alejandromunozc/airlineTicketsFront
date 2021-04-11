@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Button, Modal } from "reactstrap";
+import AppContext from "../context/AppContext";
+import requests from "../requests";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AddPassenger = ({ flight }) => {
+  const { state, refreshFlights, updateDetail } = useContext(AppContext);
   const [openModalState, setOpenModalState] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
   const openModal = () => {
     setOpenModalState(!openModalState);
   };
@@ -31,10 +33,17 @@ const AddPassenger = ({ flight }) => {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
+        requests.getFlights().then((newFlights) => {
+          console.log("newFlights", newFlights);
+          refreshFlights(newFlights);
+          if (state.flight[0].tickets) {
+            state.flight[0].tickets.push(response.data.ticket._id);
+            updateDetail(state.flight[0]);
+          }
+        });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("respuesta error", error);
       });
 
     openModal();
@@ -51,10 +60,7 @@ const AddPassenger = ({ flight }) => {
           Add passenger
         </Button>
       ) : (
-        <Button
-          color="warning"
-          className="btn btn-sm m-1"
-        >
+        <Button color="warning" className="btn btn-sm m-1">
           Flight is full
         </Button>
       )}

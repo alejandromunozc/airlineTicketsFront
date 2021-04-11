@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import countries from "../countries.json";
@@ -12,7 +12,7 @@ const NewFlight = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const dateNow = new Date().toISOString().substring(0, 16);
+  const history = useHistory();
   const onSubmit = (data) => {
     const originNameStart = data.origin.indexOf(" - ");
     const originNameFlag = data.origin.substr(0, originNameStart);
@@ -42,7 +42,8 @@ const NewFlight = () => {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
+        history.push("/");
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +82,6 @@ const NewFlight = () => {
                     className="form-control"
                     type="datetime-local"
                     id="date"
-                    value={dateNow}
                     {...register("date", { required: "Required" })}
                   />
                   {errors.date && <p>{errors.date.message}</p>}

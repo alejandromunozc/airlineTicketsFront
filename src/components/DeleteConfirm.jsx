@@ -3,9 +3,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const DeleteConfirm = ({ title, id, arrayFlights }) => {
+const DeleteConfirm = ({ title, id }) => {
   const [openModalState, setOpenModalState] = useState(false);
-  const [flights, setFlights] = useState(arrayFlights);
 
   const openModal = () => {
     setOpenModalState(!openModalState);
@@ -20,12 +19,7 @@ const DeleteConfirm = ({ title, id, arrayFlights }) => {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        if (title === "flight") {
-          const indexFlight = flights.findIndex((item) => item._id === id);
-          flights.splice(indexFlight, 1);
-          setFlights(flights);
-        }
+        console.log(response.data);
         setOpenModalState(!openModalState);
       })
       .catch((error) => {

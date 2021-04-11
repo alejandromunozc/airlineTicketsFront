@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import countries from "../countries.json";
@@ -16,6 +16,7 @@ const EditFlight = () => {
     handleSubmit,
     setValue,
   } = useForm();
+  const history = useHistory();
   const dateNow = date.substring(0, 16);
   const onSubmit = (data) => {
     const originNameStart = data.origin.indexOf(" - ");
@@ -54,6 +55,7 @@ const EditFlight = () => {
     axios(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        history.push("details");
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +70,7 @@ const EditFlight = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="row p-3">
         <div className="col-sm-6">
-          <Link to="/">
+          <Link to="/details">
             <button type="button" className="btn btn-outline-primary btn-sm">
               Back
             </button>

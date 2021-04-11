@@ -7,11 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../context/AppContext";
 
 const Details = () => {
+  const { state, viewDetail } = useContext(AppContext);
   const [passengers, setPassengers] = useState([]);
-  const { state } = useContext(AppContext);
-  const flight = state.flight[0];
+  const { flight } = state;
 
-  const data = { flightId: flight._id };
+  const data = { flightId: flight[0]._id };
 
   const config = {
     method: "post",
@@ -58,34 +58,38 @@ const Details = () => {
           <div className="card border-secondary mb-3">
             <div className="card-header d-flex">
               <div>
-                <strong>{flight.date.substring(0, 16)}</strong>
+                <strong>{flight[0].date.substring(0, 16)}</strong>
               </div>
               <div className="new-passenger">
-                <AddPassenger flight={flight} />
+                <AddPassenger flight={flight[0]} />
               </div>
             </div>
             <div className="card-body text-secondary">
               <div className="row">
                 <div className="origin col-sm-6">
                   <h5>Origin</h5>
-                  <img className="origin-flag" src={flight.originFlag} alt="" />
-                  <p>{flight.origin}</p>
+                  <img
+                    className="origin-flag"
+                    src={flight[0].originFlag}
+                    alt=""
+                  />
+                  <p>{flight[0].origin}</p>
                 </div>
                 <div className="destination col-sm-6">
                   <h5>Destination</h5>
                   <img
                     className="destination-flag"
-                    src={flight.destinationFlag}
+                    src={flight[0].destinationFlag}
                     alt=""
                   />
-                  <p>{flight.destination}</p>
+                  <p>{flight[0].destination}</p>
                 </div>
               </div>
             </div>
             <div className="card-footer d-flex">
               <div className="capacity p-2">
                 <span>
-                  Capacity: {flight.tickets.length}/{flight.capacity}
+                  Capacity: {flight[0].tickets.length}/{flight[0].capacity}
                 </span>
               </div>
             </div>
