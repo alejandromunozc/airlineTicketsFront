@@ -33,7 +33,7 @@ const NewFlight = () => {
 
     const config = {
       method: "post",
-      url: "http://localhost:3000/api/flights/",
+      url: "https://airlineticketsapi.herokuapp.com/api/flights/",
       headers: {
         "Content-Type": "application/json",
       },
@@ -41,12 +41,11 @@ const NewFlight = () => {
     };
 
     axios(config)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         history.push("/");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        
       });
   };
   return (

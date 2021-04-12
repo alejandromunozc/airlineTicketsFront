@@ -24,7 +24,7 @@ const AddPassenger = ({ flight }) => {
 
     const config = {
       method: "post",
-      url: "http://localhost:3000/api/tickets/add/",
+      url: "https://airlineticketsapi.herokuapp.com/api/tickets/add/",
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,7 +34,6 @@ const AddPassenger = ({ flight }) => {
     axios(config)
       .then((response) => {
         requests.getFlights().then((newFlights) => {
-          console.log("newFlights", newFlights);
           refreshFlights(newFlights);
           if (state.flight[0].tickets) {
             state.flight[0].tickets.push(response.data.ticket._id);
@@ -42,8 +41,8 @@ const AddPassenger = ({ flight }) => {
           }
         });
       })
-      .catch((error) => {
-        console.log("respuesta error", error);
+      .catch(() => {
+  
       });
 
     openModal();

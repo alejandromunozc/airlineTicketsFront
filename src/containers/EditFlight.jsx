@@ -45,7 +45,7 @@ const EditFlight = () => {
 
     const config = {
       method: "put",
-      url: `http://localhost:3000/api/flights/${state.flight[0]._id}`,
+      url: `https://airlineticketsapi.herokuapp.com/api/flights/${state.flight[0]._id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -53,12 +53,11 @@ const EditFlight = () => {
     };
 
     axios(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
+      .then(() => {
         history.push("details");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+
       });
   };
 

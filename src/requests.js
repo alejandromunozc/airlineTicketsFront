@@ -1,11 +1,11 @@
 import axios from "axios";
-const API = "http://localhost:3000/api/flights/";
+const API = "https://airlineticketsapi.herokuapp.com/api/flights/";
 
 const requests = {};
 
-requests.getFlights = async () => {
-  const response = await axios.get(API);
-  return response.data;
+requests.getFlights = async() => {
+    const response = await axios.get(API);
+    return response.data;
 };
 
 export default requests;

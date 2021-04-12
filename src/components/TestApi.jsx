@@ -7,18 +7,17 @@ const TestApi = () => {
   const [flights, setFlights] = useState([]);
   const config = {
     method: "get",
-    url: "http://localhost:3000/api/flights/",
+    url: "https://airlineticketsapi.herokuapp.com/api/flights/",
     headers: {},
   };
 
   useEffect(() => {
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data.flights));
         setFlights(response.data.flights);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        
       });
   }, []);
 

@@ -27,7 +27,6 @@ const Flights = ({ flights }) => {
         {flights.map((flight) => (
           <Flight
             key={flights._id}
-            //key={Math.random()}
             flight={flight}
             handleViewDetail={handleViewDetail}
           />

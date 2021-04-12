@@ -15,7 +15,7 @@ const Details = () => {
 
   const config = {
     method: "post",
-    url: "http://localhost:3000/api/tickets/",
+    url: "https://airlineticketsapi.herokuapp.com/api/tickets/",
     headers: { "Content-Type": "application/json" },
     data,
   };
@@ -24,8 +24,8 @@ const Details = () => {
       .then((response) => {
         setPassengers(response.data.tickets);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        
       });
   }, []);
 

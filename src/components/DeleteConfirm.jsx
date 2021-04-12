@@ -13,17 +13,16 @@ const DeleteConfirm = ({ title, id }) => {
   const deleteItem = () => {
     const config = {
       method: "delete",
-      url: `http://localhost:3000/api/${title}s/${id}`,
+      url: `https://airlineticketsapi.herokuapp.com/api/${title}s/${id}`,
       headers: {},
     };
 
     axios(config)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         setOpenModalState(!openModalState);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+
       });
   };
 
